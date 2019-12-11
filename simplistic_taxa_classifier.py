@@ -37,7 +37,7 @@ def main():
 
     args = parser.parse_args()
 
-    ray.init()
+    ray.init(num_cpus=args.proc)
 
     print("Reading in files.", file=sys.stderr)
 
