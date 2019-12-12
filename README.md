@@ -22,7 +22,7 @@ vsearch --usearch_global representative_sequences.fna \
         --blast6out rep_seqs_vs_SILVA_blast6out.txt
 ```
 
-You can then run the simplistic taxa classifier with the below command, which requires the `ray`, `numpy`, and `pandas` python packages:
+You can then run the simplistic taxa classifier with the below command, which requires the `ray`, `numpy`, and `pandas` python packages (note that the taxonomy file indicated can be downloaded [here](http://kronos.pharmacology.dal.ca/public_files/taxa_classifiers/qiime2-2019.7_classifiers_new_stringent/modified_taxonomy_files/) and was modified as described [here](https://github.com/LangilleLab/microbiome_helper/wiki/Creating-QIIME-2-Taxonomic-Classifiers)):
 ```
 python simplistic_taxa_classifier.py -i rep_seqs_vs_SILVA_blast6out.txt \
                                      -f representative_sequences.fna \
