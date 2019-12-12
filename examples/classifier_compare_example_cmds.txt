@@ -1,0 +1,191 @@
+# This file contains the raw commands that were used for generating the example QIIME 2 taxonomic assignments and the comparison between the QIIME 2 taxa profiles and the custom simplistic approach described in this repository. This file is saved here just to make regenerating the example output files easily (for different versions of either QIIME 2 or the classifiers themselves.
+
+# Initialize input files as bash variables to make it easier to scan the inputs by eye.
+# Classifiers to be tested, these are the key values to be changed (along with the QIIME2 and final diff output directories)
+BACTERIA_FULL16S_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_16S.qza"
+BACTERIA_V6V8_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_16S_V6.V8_B969F_BA1406R.qza"
+BACTERIA_V4V5_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_16S_V4.V5_515F_926R.qza"
+BACTERIA_V3V4_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_16S_V3.V4_341F_805R.qza"
+ARCHAEA_V6V8_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_16S_V6.V8_A956F_A1401R.qza"
+CYANO_V3V4_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_16S_V3.V4_CYA359F_CYA781R.qza"
+EUK_18S_V4_Q2_CLASSIFIER="/home/gavin/projects/mh_database/qiime2-2019.7_files_stringent/taxa_classifiers/classifier_silva_132_99_18S.qza"
+ITS_SUBSET_Q2_CLASSIFIER="/home/shared/taxa_classifiers/qiime2-2019.7_classifiers/classifier_sh_refs_qiime_ver8_99_s_02.02.2019_ITS.qza"
+ITS_ALL_Q2_CLASSIFIER="/home/shared/taxa_classifiers/qiime2-2019.7_classifiers/classifier_sh_refs_qiime_ver8_99_s_all_02.02.2019_ITS.qza"
+
+BACTERIA_V6V8_QIIME2_OUT="qiime2_taxa/test_V6V8"
+BACTERIA_V4V5_QIIME2_OUT="qiime2_taxa/test_V4V5"
+BACTERIA_V3V4_QIIME2_OUT="qiime2_taxa/test_V3V4"
+ARCHAEA_V6V8_QIIME2_OUT="qiime2_taxa/test_archaea_V6V8"
+CYANO_V3V4_QIIME2_OUT="qiime2_taxa/test_cyano_V3V4"
+EUK_18S_V4_QIIME2_OUT="qiime2_taxa/test_18S_V4"
+ITS_ALL_QIIME2_OUT="qiime2_taxa/test_ITS_all"
+ITS_SUBSET_QIIME2_OUT="qiime2_taxa/test_ITS_subset"
+BACTERIA_V6V8_QIIME2_OUT_FULL="qiime2_taxa/test_V6V8_full16S"
+BACTERIA_V4V5_QIIME2_OUT_FULL="qiime2_taxa/test_V4V5_full16S"
+BACTERIA_V3V4_QIIME2_OUT_FULL="qiime2_taxa/test_V3V4_full16S"
+
+BACTERIA_V6V8_COMPARE="taxa_diff/simplistic_vs_qiime2_bacteria_V6V8.tsv"
+BACTERIA_V4V5_COMPARE="taxa_diff/simplistic_vs_qiime2_bacteria_V4V5.tsv"
+BACTERIA_V3V4_COMPARE="taxa_diff/simplistic_vs_qiime2_bacteria_V3V4.tsv"
+ARCHAEA_V6V8_COMPARE="taxa_diff/simplistic_vs_qiime2_archaea_V6V8.tsv"
+CYANO_V3V4_COMPARE="taxa_diff/simplistic_vs_qiime2_cyano_V3V4.tsv"
+EUK_18S_V4_COMPARE="taxa_diff/simplistic_vs_qiime2_18S_V4.tsv"
+ITS_ALL_COMPARE="taxa_diff/simplistic_vs_qiime2_ITS_all.tsv"
+ITS_SUBSET_COMPARE="taxa_diff/simplistic_vs_qiime2_ITS_subset.tsv"
+BACTERIA_V6V8_COMPARE_FULL="taxa_diff/simplistic_vs_qiime2_bacteria_V6V8_full16S.tsv"
+BACTERIA_V4V5_COMPARE_FULL="taxa_diff/simplistic_vs_qiime2_bacteria_V4V5_full16S.tsv"
+BACTERIA_V3V4_COMPARE_FULL="taxa_diff/simplistic_vs_qiime2_bacteria_V3V4_full16S.tsv"
+
+BACTERIA_V6V8_TEST_QZA="test_infiles/test_bacteria_V6V8_seqs.qza"
+BACTERIA_V4V5_TEST_QZA="test_infiles/test_bacteria_V4V5_seqs.qza"
+BACTERIA_V3V4_TEST_QZA="test_infiles/test_bacteria_V3V4_seqs.qza"
+ARCHAEA_V6V8_TEST_QZA="test_infiles/test_archaea_V6V8_seqs.qza"
+CYANO_V3V4_TEST_QZA="test_infiles/test_cyano_V3V4_seqs.qza"
+EUK_18S_V4_TEST_QZA="test_infiles/test_18S_V4_seqs.qza"
+ITS_TEST_QZA="test_infiles/test_ITS_seqs.qza"
+
+BACTERIA_V6V8_SIMPLE="simplistic_taxa/test_V6V8_simplistic_taxa.tsv"
+BACTERIA_V4V5_SIMPLE="simplistic_taxa/test_V4V5_simplistic_taxa.tsv"
+BACTERIA_V3V4_SIMPLE="simplistic_taxa/test_V3V4_simplistic_taxa.tsv"
+ARCHAEA_V6V8_SIMPLE="simplistic_taxa/test_archaea_V6V8_simplistic_taxa.tsv"
+CYANO_V3V4_SIMPLE="simplistic_taxa/test_cyano_V3V4_simplistic_taxa.tsv"
+EUK_18S_V4_SIMPLE="simplistic_taxa/test_18S_V4_simplistic_taxa.tsv"
+ITS_ALL_SIMPLE="simplistic_taxa/test_ITS_all_simplistic_taxa.tsv"
+ITS_SUBSET_SIMPLE="simplistic_taxa/test_ITS_subset_simplistic_taxa.tsv"
+
+
+
+### BACTERIA V6V8
+qiime feature-classifier classify-sklearn \
+   --i-reads $BACTERIA_V6V8_TEST_QZA \
+   --i-classifier $BACTERIA_V6V8_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $BACTERIA_V6V8_QIIME2_OUT
+
+qiime tools export --input-path $BACTERIA_V6V8_QIIME2_OUT/classification.qza --output-path $BACTERIA_V6V8_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $BACTERIA_V6V8_QIIME2_OUT/taxonomy.tsv -a $BACTERIA_V6V8_SIMPLE -o $BACTERIA_V6V8_COMPARE
+
+
+### BACTERIA V4V5
+qiime feature-classifier classify-sklearn \
+   --i-reads $BACTERIA_V4V5_TEST_QZA \
+   --i-classifier $BACTERIA_V4V5_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $BACTERIA_V4V5_QIIME2_OUT
+
+qiime tools export --input-path $BACTERIA_V4V5_QIIME2_OUT/classification.qza --output-path $BACTERIA_V4V5_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $BACTERIA_V4V5_QIIME2_OUT/taxonomy.tsv -a $BACTERIA_V4V5_SIMPLE -o $BACTERIA_V4V5_COMPARE
+
+
+
+### BACTERIA V3V4
+qiime feature-classifier classify-sklearn \
+   --i-reads $BACTERIA_V3V4_TEST_QZA \
+   --i-classifier $BACTERIA_V3V4_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $BACTERIA_V3V4_QIIME2_OUT
+
+qiime tools export --input-path $BACTERIA_V3V4_QIIME2_OUT/classification.qza --output-path $BACTERIA_V3V4_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $BACTERIA_V3V4_QIIME2_OUT/taxonomy.tsv -a $BACTERIA_V3V4_SIMPLE -o $BACTERIA_V3V4_COMPARE
+
+
+### ARCHAEA V6V8
+qiime feature-classifier classify-sklearn \
+   --i-reads $ARCHAEA_V6V8_TEST_QZA \
+   --i-classifier $ARCHAEA_V6V8_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $ARCHAEA_V6V8_QIIME2_OUT
+
+qiime tools export --input-path $ARCHAEA_V6V8_QIIME2_OUT/classification.qza --output-path $ARCHAEA_V6V8_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $ARCHAEA_V6V8_QIIME2_OUT/taxonomy.tsv -a $ARCHAEA_V6V8_SIMPLE -o $ARCHAEA_V6V8_COMPARE
+
+
+### CYANO V3V4
+qiime feature-classifier classify-sklearn \
+   --i-reads $CYANO_V3V4_TEST_QZA \
+   --i-classifier $CYANO_V3V4_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $CYANO_V3V4_QIIME2_OUT
+
+qiime tools export --input-path $CYANO_V3V4_QIIME2_OUT/classification.qza --output-path $CYANO_V3V4_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $CYANO_V3V4_QIIME2_OUT/taxonomy.tsv -a $CYANO_V3V4_SIMPLE -o $CYANO_V3V4_COMPARE
+
+
+### EUK_18S_V4
+qiime feature-classifier classify-sklearn \
+   --i-reads $EUK_18S_V4_TEST_QZA \
+   --i-classifier $EUK_18S_V4_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $EUK_18S_V4_QIIME2_OUT
+
+qiime tools export --input-path $EUK_18S_V4_QIIME2_OUT/classification.qza --output-path $EUK_18S_V4_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $EUK_18S_V4_QIIME2_OUT/taxonomy.tsv -a $EUK_18S_V4_SIMPLE -o $EUK_18S_V4_COMPARE
+
+
+### ITS_ALL
+qiime feature-classifier classify-sklearn \
+   --i-reads $ITS_TEST_QZA \
+   --i-classifier $ITS_ALL_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $ITS_ALL_QIIME2_OUT
+
+qiime tools export --input-path $ITS_ALL_QIIME2_OUT/classification.qza --output-path $ITS_ALL_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $ITS_ALL_QIIME2_OUT/taxonomy.tsv -a $ITS_ALL_SIMPLE -o $ITS_ALL_COMPARE
+
+
+### ITS_SUBSET
+qiime feature-classifier classify-sklearn \
+   --i-reads $ITS_TEST_QZA \
+   --i-classifier $ITS_SUBSET_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $ITS_SUBSET_QIIME2_OUT
+
+qiime tools export --input-path $ITS_SUBSET_QIIME2_OUT/classification.qza --output-path $ITS_SUBSET_QIIME2_OUT
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $ITS_SUBSET_QIIME2_OUT/taxonomy.tsv -a $ITS_SUBSET_SIMPLE -o $ITS_SUBSET_COMPARE
+
+
+
+### Bacteria full-length QIIME2 classifier (evaluated against each 16S variable region dataset)
+
+# BACTERIA V6V8 - full length validation
+qiime feature-classifier classify-sklearn \
+   --i-reads $BACTERIA_V6V8_TEST_QZA \
+   --i-classifier $BACTERIA_FULL16S_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $BACTERIA_V6V8_QIIME2_OUT_FULL
+
+qiime tools export --input-path $BACTERIA_V6V8_QIIME2_OUT_FULL/classification.qza --output-path $BACTERIA_V6V8_QIIME2_OUT_FULL
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $BACTERIA_V6V8_QIIME2_OUT_FULL/taxonomy.tsv -a $BACTERIA_V6V8_SIMPLE -o $BACTERIA_V6V8_COMPARE_FULL
+
+# BACTERIA V4V5 - full length validation
+qiime feature-classifier classify-sklearn \
+   --i-reads $BACTERIA_V4V5_TEST_QZA \
+   --i-classifier $BACTERIA_FULL16S_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $BACTERIA_V4V5_QIIME2_OUT_FULL
+
+qiime tools export --input-path $BACTERIA_V4V5_QIIME2_OUT_FULL/classification.qza --output-path $BACTERIA_V4V5_QIIME2_OUT_FULL
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $BACTERIA_V4V5_QIIME2_OUT_FULL/taxonomy.tsv -a $BACTERIA_V4V5_SIMPLE -o $BACTERIA_V4V5_COMPARE_FULL
+
+# BACTERIA V3V4 - full length validation
+qiime feature-classifier classify-sklearn \
+   --i-reads $BACTERIA_V3V4_TEST_QZA \
+   --i-classifier $BACTERIA_FULL16S_Q2_CLASSIFIER \
+   --p-n-jobs 60 \
+   --output-dir $BACTERIA_V3V4_QIIME2_OUT_FULL
+
+qiime tools export --input-path $BACTERIA_V3V4_QIIME2_OUT_FULL/classification.qza --output-path $BACTERIA_V3V4_QIIME2_OUT_FULL
+
+python /home/gavin/github_repos/taxa_sanity_check/compare_simplistic_and_qiime2_taxa.py -q $BACTERIA_V3V4_QIIME2_OUT_FULL/taxonomy.tsv -a $BACTERIA_V3V4_SIMPLE -o $BACTERIA_V3V4_COMPARE_FULL
+
+
