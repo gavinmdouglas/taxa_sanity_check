@@ -1,6 +1,6 @@
 ### Summary
 
-This repository contains two scripts for running a quick sanity check that a QIIME 2 taxonomic classifier (based on Naive Bayes) is performing roughly as expected.
+This repository contains two scripts for running a quick sanity check that a QIIME 2 taxonomic classifier (based on Naive Bayes) is performing roughly as expected. **Note that although a simplistic taxonomic approach is described for comparing to QIIME 2 taxonomic assignments the main step of comparing taxonomy assignments could be done with the output of any approach.**
 
 The motivation for writing these scripts is that it is sometimes possible for these classifiers to break depending on the input dataset. In particular, one classifier I created seemed to work fine on a small test set, but on more realistic datasets it called most ASVs as the genus Alteromonas (this issue is described [here](https://github.com/LangilleLab/microbiome_helper/issues/43)). This issue seems to have occurred for at least a few other people as well (see [here](https://forum.qiime2.org/t/wrong-taxonomy-qzv-file/5287/3)). This appears to only be an issue when creating custom classifiers and I believe it is mainly related to which reference sequences are included for training (i.e. using more conservative options for ```qiime feature-classifier extract-reads``` is likely all that is needed to resolve these kinds of problems).
 
