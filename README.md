@@ -18,6 +18,7 @@ The first step is to run an alignment of the query ASVs against the reference se
 vsearch --usearch_global representative_sequences.fna \
         --db SILVA_132_QIIME_release/rep_set/rep_set_all/99/silva132_99.fna \
         --id 0.8 \
+        --maxaccepts 100 \
         --blast6out rep_seqs_vs_SILVA_blast6out.txt
 ```
 
