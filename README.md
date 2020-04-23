@@ -6,6 +6,16 @@ The motivation for writing these scripts is that it is sometimes possible for th
 
 Although it's easy to identify red flags like all ASVs being called the same genus, it would be easy to miss if a classifier was failing to classify only particular lineages. I wrote the basic scripts in this repository to address this issue, which can be used to check that no major misclassifications are occurring when classifying rarer lineages with QIIME 2.
 
+### Setup
+
+The required Python packages are listed below. The indicated versions are what were used when these scripts were tested (in a Python 3.7.3 environment).
+
+* `argparse` - 1.1
+* `numpy` - 1.18.1
+* `ray` - 0.7.6
+* `pandas` - 0.24.2
+
+
 ### Simplistic taxa classifications
 
 This sanity check is performed by comparing QIIME 2 classifications to simplistic classifications based on percent identity scores against the same database of reference sequences (but full-length). These identities are used to determine classifications at each taxonomic level based on >=90% of matching weights supporting a particular classification. The weight of each matching reference sequence to the query ASV is calculated as 2^id (where id is the percent identity). Only matches above 80% are retained and no lower levels are classified if a higher taxonomic level cannot be classified. There are also heuristics regarding whether it is possible to classify a given taxonomic rank - a minimum match of 99%, 97%, 95%, 93%, 91%, 89%, and 80% is required to make a classification at the species, genus, family, order, phylum, and kingom levels, respectively. There are many more sophisticated approaches for running taxonomic classification, but the advantage of this approach is that the general lineages should be correct (especially at higher levels) and it is very simple to back-track and figure out why classifications with this approach disagree with QIIME 2 classifiers.
