@@ -10,10 +10,10 @@ Although it's easy to identify red flags like all ASVs being called the same gen
 
 The required Python packages are listed below. The indicated versions are what were used when these scripts were tested (in a Python 3.7.3 environment).
 
-* `argparse` - 1.1
-* `numpy` - 1.18.1
-* `ray` - 0.7.6
-* `pandas` - 0.24.2
+* `argparse - 1.1`
+* `numpy - 1.18.1`
+* `ray - 0.7.6`
+* `pandas - 0.24.2`
 
 
 ### Simplistic taxa classifications
